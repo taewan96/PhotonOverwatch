@@ -16,44 +16,60 @@ public class PlayerFire : MonoBehaviour
     [SerializeField] private Hall hall;
     public int ammoCount;
     public int ammoMaxCount = 100;
+    public TextMeshProUGUI textAmmoInfo;
     // Start is called before the first frame update
     void Start()
     {
         ammoCount = ammoMaxCount;
+
+        
     }
 
     // Update is called once per frame
 
-    void Reload()
+    private IEnumerator Reload()
     {
-        
 
-        if(Input.GetKeyDown(KeyCode.R))
+
+        if (Input.GetKeyDown(KeyCode.R) || ammoCount <= 0)
         {
+            yield return new WaitForSeconds(1);
+
             ammoCount = 40;
+
         }
     }
 
 
 
+
+    /*void ReloadTime()
+    {
+        Reload();
+
+        Invoke("Reload", 5);
+        Debug.Log("Reload() Time : " + Time.time);
+
+    }*/
     void Shoot()
     {
         fireTime += Time.deltaTime;
         if (fireTime > fireRate)
         {
 
-            if (/*fireTime > fireRate && */Input.GetButton("Fire1"))
+            if (Input.GetButton("Fire1"))
             {
                 if (ammoCount <= 0)
 
                     return;
 
-                
-
                 --ammoCount;
+
                 fireTime = 0;
+
+
                 // hand에서 hand의 앞방향으로
-                Ray ray = new Ray(hand.position, hand.forward);
+                Ray ray = new Ray(hand.position, hand.forward + new Vector3(Random.Range(-0.2f, 0.2f),Random.Range(-0.2f, 0.2f), 0f));
                 RaycastHit hitInfo;
                 // raycast를 이용해서 총을 쏘고 싶다.
                 if (Physics.Raycast(ray, out hitInfo))
@@ -83,7 +99,9 @@ public class PlayerFire : MonoBehaviour
     {
         Shoot();
 
-        Reload();
+        StartCoroutine(Reload());
 
+
+        textAmmoInfo.text = ammoCount + "/" + ammoMaxCount;
     }
 }
