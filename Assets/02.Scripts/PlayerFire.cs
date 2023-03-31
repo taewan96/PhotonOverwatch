@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    enum Hall{
+    /*enum Hall{
         No,
         YES
-    }
+    }*/
     public Transform hand;
     public GameObject[] bulletImpactFactoryList;
     float fireTime = 0;
     float fireRate = 0.07f;
-    [SerializeField] private Hall hall;
+    /*[SerializeField] private Hall hall;*/
     public int ammoCount;
     public int ammoMaxCount = 100;
     public TextMeshProUGUI textAmmoInfo;
